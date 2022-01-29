@@ -11,13 +11,15 @@ import java.util.Set;
 
 public class Algorithm
 {
-	private List<ArrayList<Integer>> population = new ArrayList<ArrayList<Integer>>(); // initial population formed by a finite number of solutions. 
-	private List<ArrayList<Integer>> newPopulation = new ArrayList<ArrayList<Integer>>(); // every new population will be stored there
+	private ArrayList<ArrayList<Integer>> population = new ArrayList<ArrayList<Integer>>(); // initial population formed by a finite number of solutions. 
+	private ArrayList<ArrayList<Integer>> newPopulation = new ArrayList<ArrayList<Integer>>(); // every new population will be stored there
 	int numberOfCities = 5;
 	int numberOfSolutions = 10; // number of solutions in population
 	int numberOfPopulations = 10; // number of needed populations to achieve the optimal goal
 	private double fitness[]; // values of fitness functions for each solution
 	private double probability[]; // 
+	double recordDistance = 10000;
+	List<Integer> bestEver = new ArrayList<Integer>();
 	
 	
 	public Algorithm(int numberOfSolutions, int numberOfCities, int numberOfPopulations) 
@@ -54,20 +56,31 @@ public class Algorithm
 			}
 		}
 	}
-	private List<ArrayList<Integer>> rouletteSelection(CitiesGrid cities, List<ArrayList<Integer>> population1) 
+	private void calculateFitness(CitiesGrid cities, ArrayList<ArrayList<Integer>> population) {
+		for(int i = 0; i < numberOfSolutions; i++) {
+			double d = cities.calculateDistance(population.get(i));
+			if(d < recordDistance) {
+				recordDistance = d;
+				bestEver = population.get(i);
+			}
+			fitness[i] = 1/d;
+		}
+	}
+	private ArrayList<ArrayList<Integer>> rouletteSelection(CitiesGrid cities, ArrayList<ArrayList<Integer>> population1) 
 	{
-		List<ArrayList<Integer>> newPopulation1 = new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> newPopulation1 = new ArrayList<ArrayList<Integer>>();
 		// this method is selecting solutions depending on values of fitness function using a roulette wheel selection algorithm.
 		//Fitness function is inversely proportional to probability, so individuals who have low values of the distance
 		//may have a high chance of being selected. 
 		double sum = 0;
 		//double sumOfProbabilities = 0;
 		Random generator = new Random();
-		for(int i = 0; i < population1.size(); i++)
+		calculateFitness(cities, population1);
+		/*for(int i = 0; i < population1.size(); i++)
 			{
 				fitness[i] = 1/(cities.calculateDistance(population1.get(i))); //calculate the fitness of a solution
 				sum += fitness[i];
-			}
+			}*/
 		probability[0] = fitness[0]/sum;
 		for(int i = 1; i < population1.size(); i++) probability[i] = probability[i-1] + (fitness[i] / sum); 
 		for(int j = 0; j < population1.size(); j++)
