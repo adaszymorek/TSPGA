@@ -21,6 +21,7 @@ public class Population {
 		this.fitness = new double[numberOfSolutions];
 		this.probability = new double[numberOfSolutions];
 		if(isStart == true) setStartPopulation();
+		else setSpecificPopulation();
 	}
 	private void setStartPopulation()
 	{
@@ -30,6 +31,13 @@ public class Population {
 			solutions.add(new ArrayList<Integer>()); 
 			for(int j = 0; j < numberOfCities; j++) solutions.get(i).add(j);
 			Collections.shuffle(solutions.get(i));
+		}
+	}
+	private void setSpecificPopulation() {
+		for(int i = 0; i < numberOfSolutions; i++)
+		{
+			solutions.add(new ArrayList<Integer>()); 
+			for(int j = 0; j < numberOfCities; j++) solutions.get(i).add(j);
 		}
 	}
 	void mutation(List<Integer> order, double mutationRate) {
@@ -48,6 +56,8 @@ public class Population {
 			if(d < recordDistance) {
 				recordDistance = d;
 				bestEver = solutions.get(i);
+				cities.setDistance(d);
+				cities.setOrder(bestEver);
 			}
 			fitness[i] = 1/d;
 		}

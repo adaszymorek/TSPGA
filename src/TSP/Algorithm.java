@@ -14,23 +14,27 @@ public class Algorithm {
 	int numberOfCities;
 	int numberOfSolutions;
 	Population startPopulation;
-	int numberOfPopulations = 4000;
+	CitiesGrid cities;
+	int numberOfPopulations = 5000;
 	double bestDistance[] = new double[numberOfPopulations];
 	
 	public Algorithm(int numberOfCities, int numberOfSolutions) {
 		this.numberOfCities = numberOfCities;
 		this.numberOfSolutions = numberOfSolutions;
-		CitiesGrid cities = new CitiesGrid(numberOfCities);
+		cities = new CitiesGrid(numberOfCities);
 		startPopulation = new Population(numberOfCities, numberOfSolutions, true);
 		for(int i = 0; i < numberOfPopulations; i++) {
+	//int i = 0;
+		//while(startPopulation.recordDistance > 2307){
 			startPopulation.calculateFitness(cities);
 			startPopulation.normalizeFitness();
 			startPopulation.rouletteSelection();
-			System.out.println(i + "\t"+startPopulation.recordDistance);
+			//System.out.println(i + "\t"+startPopulation.recordDistance);
 			bestDistance[i] = startPopulation.recordDistance;
-			evolution(cities, "PMX");
+			evolution(cities, "CX");
+			//i++;
 		}
-		saveToFile();
+		saveToFile("cx.txt");
 	}
 	void evolution(CitiesGrid cities, String crossoverType) {
 
@@ -51,11 +55,11 @@ public class Algorithm {
 			startPopulation.setSolutions(population);
 		}
 	
-		private void saveToFile() {
+		private void saveToFile(String fileName) {
 			FileWriter fw = null;
 			String sFitness[] = new String[bestDistance.length];
 			try {
-				fw = new FileWriter("plik.txt");
+				fw = new FileWriter(fileName);
 				BufferedWriter bw = new BufferedWriter(fw);
 				for (int i = 0; i < bestDistance.length; i++) {
 					sFitness[i] = String.valueOf(bestDistance[i]);  
@@ -183,4 +187,11 @@ public class Algorithm {
 					    
 			    return children;
 			}
+			public CitiesGrid getCities() {
+				return cities;
+			}
+			public void setCities(CitiesGrid cities) {
+				this.cities = cities;
+			}
+			
 }
