@@ -12,7 +12,7 @@ public class CitiesGridAnimation extends JPanel implements Runnable{
 	int cityBIndex;
 	int cityAIndex;
 	
-	int cityCIndex;
+	int cityCIndeks;
 	int cityDIndex;
 	
 	int cityEIndex;
@@ -49,7 +49,7 @@ public class CitiesGridAnimation extends JPanel implements Runnable{
 				
 				if(i>=1)
 				{
-				cityCIndex = order.get(i-1);
+				cityCIndeks = order.get(i-1);
 				cityDIndex = order.get((i) % order.size());
 				}
 				
@@ -105,7 +105,7 @@ public class CitiesGridAnimation extends JPanel implements Runnable{
 		       
 		       if (i>=1)
 		       {
-		    	   g2d.drawLine(cities.getCitiesCoordinates().get(cityCIndex).x, cities.getCitiesCoordinates().get(cityCIndex).y, cities.getCitiesCoordinates().get(cityDIndex).x, cities.getCitiesCoordinates().get(cityDIndex).y);
+		    	   g2d.drawLine(cities.getCitiesCoordinates().get(cityCIndeks).x, cities.getCitiesCoordinates().get(cityCIndeks).y, cities.getCitiesCoordinates().get(cityDIndex).x, cities.getCitiesCoordinates().get(cityDIndex).y);
 		       }
 		       
 		       if (i>=2)
