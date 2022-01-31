@@ -1,6 +1,9 @@
 package TSP;
 
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -17,11 +20,16 @@ public class MainInterface {
 				    JFrame frame = new JFrame("Generated path");
 				    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				   // ga.getCities();
-					frame.add(ga.getCities().getAnimation());
-				    frame.setSize(600, 600);
+				    CitiesGridAnimation cite = new CitiesGridAnimation(ga.getCities());
+					frame.add(cite);
+				    frame.setSize(800, 800);
 				    frame.setLocationRelativeTo(null);
 				    frame.setVisible(true);
 
+				    
+					ExecutorService exec = Executors.newFixedThreadPool(1);
+					exec.execute(cite);
+					exec.shutdown();
 				}
 			});
 
